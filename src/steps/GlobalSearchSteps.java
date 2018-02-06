@@ -3,6 +3,7 @@ package steps;
 import org.openqa.selenium.WebDriver;
 import org.testng.asserts.SoftAssert;
 
+import pages.ActiveProjectsPage;
 import pages.CreateNewProjectPage;
 import pages.GlobalSearchPage;
 
@@ -14,6 +15,7 @@ public class GlobalSearchSteps {
 	CreateNewProjectSteps createNewProjectSteps = new CreateNewProjectSteps();
 	CreateNewProjectPage createNewProjectPage = new CreateNewProjectPage();
 	UploadDownloadAssetsSteps uploadDownlaodAssetsSteps = new UploadDownloadAssetsSteps();
+	ActiveProjectsPage activeProjectsPage = new ActiveProjectsPage();
 			
 	public void assetUpload(WebDriver driver,String filePath) throws InterruptedException {
 		createNewProjectPage.fileUploadWhileCreating(driver, filePath);		
@@ -26,6 +28,20 @@ public class GlobalSearchSteps {
 		globalSearchPage.searchByProjectAndClick(driver, softAssert, projectName);
 		uploadDownlaodAssetsSteps.uploadFileProofingWindowGlobalSearch(driver, filePath, sampleFilePath, softAssert);
 		globalSearchPage.clickSaveChangesButton(driver);
+	}
+
+	public void globalSearchProjectSteps(WebDriver driver,SoftAssert softAssert, String projectName) throws InterruptedException
+	{
+		globalSearchPage.searchByProjectFromGlobalSearch(driver, softAssert, projectName);
+		globalSearchPage.clickOnEmailLnk(driver);
+	}
+
+	public void emailProofFromGlobalSearch(WebDriver driver, String emailForProofing){
+		activeProjectsPage.enterEmailForProofing(driver, emailForProofing);
+		activeProjectsPage.clickOnArtworkCheckbox(driver);
+		activeProjectsPage.clickOnEmailProofButton(driver);
+		activeProjectsPage.waitSucessSentEmailProof(driver);
+		activeProjectsPage.clickOnCloseProofButton(driver);
 	}
 }
 

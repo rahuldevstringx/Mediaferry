@@ -85,7 +85,7 @@ public class UploadingAssetsTest {
         createNewProjectSteps.submittingJob(driver,softAssert, projectName);
         projectCountAfter = homeSteps.projectCountAfter(driver);
         homeSteps.verifyProjectCount(driver, softAssert, projectCountBefore+1, projectCountAfter);
-        homeSteps.goToActivityFeed(driver);
+        homeSteps.navigateToActivityFeed(driver);
         activityFeedSteps.goToUploadAssetsWindow(driver);
         uploadDownloadAssetsSteps.uploadFileFromActivityFeedPage(driver, softAssert, driverObj.getFilePath());
         loginSteps.logout(driver, softAssert);

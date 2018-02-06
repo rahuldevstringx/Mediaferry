@@ -3,6 +3,7 @@ package steps;
 import BaseClasses.BasePage;
 import org.openqa.selenium.WebDriver;
 import org.testng.asserts.SoftAssert;
+import pages.ActiveProjectsPage;
 import pages.CreateNewProjectPage;
 import pages.HomePage;
 import utilities.UtilityMethods;
@@ -11,7 +12,6 @@ public class CreateNewProjectSteps {
 
     CreateNewProjectPage createNewProjectPage = new CreateNewProjectPage();
     UtilityMethods utilityMethods = new UtilityMethods();
-    BasePage basePage = new BasePage();
     HomePage homePage = new HomePage();
 
     public void fillingDetails(WebDriver driver, String projectName, String campaign, String brandName, String creativeLevel, String filePath, String priority, String projectowner, String instructions, String team, String projectwidth, String projectheight){
@@ -105,7 +105,6 @@ public class CreateNewProjectSteps {
 
     public void uploadingAssetsWhileCreatingJob(WebDriver driver, SoftAssert softAssert, String filePath) throws InterruptedException {
         createNewProjectPage.fileUploadWhileCreating(driver, filePath);
-        //createNewProjectPage.acceptingWarnings(driver);
         createNewProjectPage.verifyAssetsUploadedWhileCreating(driver,softAssert);
     }
 
@@ -136,14 +135,22 @@ public class CreateNewProjectSteps {
         utilityMethods.swichToWindow(driver, 2);
     }
 
-    public void emailProofPrerequisitesSteps(WebDriver driver, String filePath) throws InterruptedException {
+    public void editJobForProofing(WebDriver driver, SoftAssert softAssert, String filePath, String saveSuccessMessage, String uploadSuccessMessage) throws InterruptedException {
         createNewProjectPage.productionStatusEdit(driver);
         createNewProjectPage.clickOnSaveBtn(driver);
+        verifyChangesSuccessfull(driver, softAssert, saveSuccessMessage);
         createNewProjectPage.clickOnFinishedArtworkByScroll(driver);
         createNewProjectPage.fileUploadWhileEditing(driver, filePath);
         createNewProjectPage.acceptingWarnings(driver);
-        basePage.scrollTop(driver);
-        homePage.clickActiveProjectsLnk(driver);
-        homePage.waitingForConstantLinks(driver);
+        verifyUploadSuccessfull(driver, softAssert, uploadSuccessMessage);
+        homePage.clickActiveProjectsLnkByScrollTop(driver);
+    }
+
+    public void verifyChangesSuccessfull(WebDriver driver, SoftAssert softAssert, String message){
+        softAssert.assertEquals(createNewProjectPage.getSaveChangesSuccessMsg(driver), message);
+    }
+
+    public void verifyUploadSuccessfull(WebDriver driver, SoftAssert softAssert, String uploadSuccessMsg){
+        softAssert.assertEquals(createNewProjectPage.getUploadSuccessMsg(driver), uploadSuccessMsg);
     }
 }

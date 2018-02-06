@@ -42,6 +42,21 @@ public class GlobalSearchPage extends BasePage{
 		uploadDownloadAssetsSteps.uploadAssetsOnProofPrerequisitesSteps(driver);
 
 	}
+
+	public void searchByProjectFromGlobalSearch(WebDriver driver,SoftAssert softAssert, String projectName) throws InterruptedException {
+		Thread.sleep(5000);
+		driver.findElement(searchByProjectLocator).clear();
+		driver.findElement(searchByProjectLocator).sendKeys(projectName);
+		waitForElementVisibility(driver, waitForProjectLocator);
+		driver.findElement(waitForProjectLocator).click();
+		Thread.sleep(2000);
+	}
+
+	public void clickOnEmailLnk(WebDriver driver){
+		By emailProofLnkLocator = By.xpath("//span[@class='projecticon']/a[8]");
+		waitForElementVisibility(driver, emailProofLnkLocator);
+		driver.findElement(emailProofLnkLocator).click();
+	}
 	
 	public void clickSaveChangesButton(WebDriver driver) throws InterruptedException
 	{

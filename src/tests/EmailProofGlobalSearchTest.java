@@ -1,4 +1,68 @@
 package tests;
 
+import BaseClasses.Driver;
+import org.openqa.selenium.WebDriver;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
+import steps.*;
+import utilities.UtilityMethods;
+
+import java.io.IOException;
+
 public class EmailProofGlobalSearchTest {
+    Driver driverObj = new Driver();
+    WebDriver driver = null;
+    SoftAssert softAssert = new SoftAssert();
+    LoginSteps loginSteps = new LoginSteps();
+    HomeSteps homeSteps = new HomeSteps();
+    UtilityMethods utilityMethods = new UtilityMethods();
+    CreateNewProjectSteps createNewProjectSteps = new CreateNewProjectSteps();
+    ActiveProjectsSteps activeProjectsSteps = new ActiveProjectsSteps();
+    GlobalSearchSteps globalSearchSteps = new GlobalSearchSteps();
+
+    String projectName = null;
+    int projectCountBefore;
+    int projectCountAfter;
+
+    @BeforeTest
+    public void start() throws IOException {
+        driver = driverObj.createDriver();
+        driver.get(driverObj.getUrl());
+    }
+
+    @Test(priority = 1)
+    public void loginWithValidCredentials() throws Exception {
+        loginSteps.login(driver, softAssert, driverObj.getUsername(), driverObj.getPassword());
+        projectName = utilityMethods.createUniqueProjectName(driverObj.getProjectName());
+        projectCountBefore = homeSteps.projectCountBefore(driver);
+        homeSteps.creatingNewProject(driver);
+        createNewProjectSteps.fillingDetails(driver, projectName, driverObj.getCampaign(), driverObj.getBrandName(), driverObj.getCreativeLevel(), driverObj.getFilePath(), driverObj.getPriority(), driverObj.getProjectOwner(), driverObj.getInstructions(), driverObj.getTeam(), driverObj.getWidth(), driverObj.getHeight());
+        createNewProjectSteps.submittingJob(driver,softAssert,projectName);
+        projectCountAfter = homeSteps.projectCountAfter(driver);
+        homeSteps.verifyProjectCount(driver, softAssert, projectCountBefore+1, projectCountAfter);
+    }
+
+    @Test(priority = 2)
+    public void emailProofing() throws InterruptedException {
+        String saveSuccessMessage = " Your changes have been saved successfully.";
+        String uploadSuccessMessage = "The selected files has been uploaded successfully.";
+        activeProjectsSteps.selectProjectForEdit(driver, softAssert, projectName);
+        createNewProjectSteps.editJobForProofing(driver, softAssert, driverObj.getSampleFilePath(), saveSuccessMessage, uploadSuccessMessage);
+        globalSearchSteps.globalSearchProjectSteps(driver, softAssert, projectName);
+        globalSearchSteps.emailProofFromGlobalSearch(driver, driverObj.getSignUpEmail());
+    }
+
+    @Test(priority = 3)
+    public void verifyEmailProof(){
+        String expectedSubject = "[MediaFerry] " + projectName + " Proof is ready for you to review";
+        activeProjectsSteps.verifyEmailProofSteps(driver, expectedSubject);
+    }
+
+    @AfterTest
+    public void tearDown(){
+        driver.quit();
+        driver=null;
+    }
 }

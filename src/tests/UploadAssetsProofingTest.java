@@ -2,6 +2,7 @@ package tests;
 
 import BaseClasses.Driver;
 import org.openqa.selenium.WebDriver;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -21,7 +22,6 @@ public class UploadAssetsProofingTest {
     SoftAssert softAssert = new SoftAssert();
     CreateNewProjectSteps createNewProjectSteps = new CreateNewProjectSteps();
     UtilityMethods utilityMethods = new UtilityMethods();
-    ActivityFeedSteps activityFeedSteps = new ActivityFeedSteps();
 
     String projectName = null;
     int projectCountBefore, projectCountAfter;
@@ -47,7 +47,7 @@ public class UploadAssetsProofingTest {
         uploadDownloadAssetsSteps.uploadFileOnProofingWindow(driver, driverObj.getFilePath(),driverObj.getSampleFilePath(), softAssert);
     }
 
-    //@AfterTest
+    @AfterTest
     public void tearDown() {
         driver.quit();
         driver = null;

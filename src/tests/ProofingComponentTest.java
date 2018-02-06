@@ -36,7 +36,6 @@ public class ProofingComponentTest {
     @Test(priority = 1)
     public void creatingNewProject() throws Exception {
         loginSteps.login(driver, softAssert, driverObj.getUsername(), driverObj.getPassword());
-       // homeSteps.waitingForHeaderLnksSpinner(driver);
         projectName = utilityMethods.createUniqueProjectName(driverObj.getProjectName());
         projectCountBefore = homeSteps.projectCountBefore(driver);
         homeSteps.creatingNewProject(driver);
@@ -52,8 +51,6 @@ public class ProofingComponentTest {
         uploadDownloadAssetsSteps.uploadAssetsOnProofPrerequisitesSteps(driver);
         uploadDownloadAssetsSteps.uploadFileOnProofingWindow(driver, driverObj.getFilePath(), driverObj.getSampleFilePath(), softAssert);
     }
-    
-    
 
     @AfterTest
     public void tearDown() {

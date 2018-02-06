@@ -11,9 +11,9 @@ public class ActiveProjectsSteps {
 
     ActiveProjectsPage activeProjectsPage = new ActiveProjectsPage();
     MailCount mailCount = new MailCount();
-    HomeSteps homeSteps = new HomeSteps();
     UtilityMethods utilityMethods = new UtilityMethods();
     MailReadVerifyingProof mailReadVerifyingProof = new MailReadVerifyingProof();
+    CreateNewProjectSteps createNewProjectSteps = new CreateNewProjectSteps();
 
 
     public void selectProject(WebDriver driver, SoftAssert softAssert, String projectName){
@@ -53,8 +53,8 @@ public class ActiveProjectsSteps {
         activeProjectsPage.clickOnRespondToQuery(driver);
         activeProjectsPage.clickOnCloseBtnResponse(driver);
         activeProjectsPage.mouseHoverAtCreatedPoject(driver, projectName);
-        boolean stausAfterCloseBtn = activeProjectsPage.statusQueryToTrafficPresence(driver);
-        softAssert.assertEquals(statusBeforeCloseBtn, stausAfterCloseBtn);
+        boolean statusAfterCloseBtn = activeProjectsPage.statusQueryToTrafficPresence(driver);
+        softAssert.assertEquals(statusBeforeCloseBtn, statusAfterCloseBtn);
     }
 
     public void sendQuerySteps(WebDriver driver, SoftAssert softAssert, String projectName,String query){
@@ -62,7 +62,6 @@ public class ActiveProjectsSteps {
         activeProjectsPage.clickOnQueryLink(driver);
         activeProjectsPage.enterMessageInQueryBox(driver, query);
         activeProjectsPage.clickOnQueryBtn(driver);
-        //activeProjectsPage.verifyRespondToQuery(driver, softAssert, projectName);
     }
 
     public void verifyMailCount(WebDriver driver, SoftAssert softAssert, String projectName, int expectedCount) throws InterruptedException {
@@ -73,11 +72,6 @@ public class ActiveProjectsSteps {
 
     public void openRespondWindowSteps(WebDriver driver) throws InterruptedException {
         activeProjectsPage.clickOnRespondToQuery(driver);
-    }
-
-    public void openAndCloseRespondWindowSteps(WebDriver driver) throws InterruptedException {
-        activeProjectsPage.clickOnRespondToQuery(driver);
-        activeProjectsPage.clickOnCloseBtnResponse(driver);
     }
 
     public void respondQuerySteps(WebDriver driver, String response){
@@ -92,7 +86,7 @@ public class ActiveProjectsSteps {
     }
 
     public void verifyValidationMsgOnRespondSteps(WebDriver driver, SoftAssert softAssert, String expectedValidation){
-        String actualValidation = activeProjectsPage.getValidationOnTypeRespose(driver);
+        String actualValidation = activeProjectsPage.getValidationOnTypeResponse(driver);
         softAssert.assertEquals(actualValidation, expectedValidation);
         activeProjectsPage.clickOnCloseBtnResponse(driver);
     }
@@ -105,10 +99,9 @@ public class ActiveProjectsSteps {
     public void verifyingStatusLnkSteps(WebDriver driver, SoftAssert softAssert, String projectName, boolean ifCondition, boolean elseCondition){
         activeProjectsPage.mouseHoverAtCreatedPoject(driver, projectName);
         activeProjectsPage.verifyStatusLink(driver, softAssert, ifCondition, elseCondition);
-        softAssert.assertAll();
     }
 
-    public void verifyValiationMessageOnQueryFields(WebDriver driver, SoftAssert softAssert){
+    public void verifyValidationMessageOnQueryFields(WebDriver driver, SoftAssert softAssert){
         activeProjectsPage.clickOnQueryBtn(driver);
         activeProjectsPage.verifyValidationMessage(driver, softAssert);
         activeProjectsPage.clickOnCloseBtn(driver);
@@ -121,17 +114,7 @@ public class ActiveProjectsSteps {
 
     public void respondQuery(WebDriver driver, String response) throws InterruptedException {
         activeProjectsPage.clickOnRespondToQuery(driver);
-        activeProjectsPage.enterResponceToQuery(driver, response);
-    }
-
-    public void verifyQueryAction(WebDriver driver, SoftAssert softAssert, String projectName){
-        activeProjectsPage.verifyStatus(driver, softAssert);
-        activeProjectsPage.verifyRespondToQuery(driver, softAssert, projectName);
-        activeProjectsPage.verifyQueryLink(driver, softAssert, false, true);
-    }
-
-    public void waitingForActiveProjectsPageLoad(WebDriver driver){
-        activeProjectsPage.waitForLoadingActiveProjectPage(driver);
+        activeProjectsPage.enterResponseToQuery(driver, response);
     }
 
     public void verifyShareFunctionality(WebDriver driver, SoftAssert softAssert, String alertMessage){
@@ -163,12 +146,40 @@ public class ActiveProjectsSteps {
         activeProjectsPage.enterEmailForProofing(driver, emailForProofing);
         activeProjectsPage.clickOnArtworkCheckbox(driver);
         activeProjectsPage.clickOnEmailProofButton(driver);
-        activeProjectsPage.waitSucessfullSentEmailProof(driver);
+        activeProjectsPage.waitSucessSentEmailProof(driver);
+        activeProjectsPage.clickOnCloseProofButton(driver);
     }
 
-    public void verifyEmailProofSteps(WebDriver driver, SoftAssert softAssert, String projectName, String expectedSubject){
-        boolean status = mailReadVerifyingProof.readMails(expectedSubject);
-        softAssert.assertEquals(status, "true");
+    public void verifyEmailProofSteps(WebDriver driver, String expectedSubject){
+        String proofingUrl = mailReadVerifyingProof.readMails(expectedSubject);
+        activeProjectsPage.verifyEmailProof(driver, proofingUrl);
+        createNewProjectSteps.closePopingWindow(driver);
+    }
+
+    public void emailProofFromProofingWindow(WebDriver driver, SoftAssert softAssert, String email, String projectName){
+        activeProjectsPage.mouseHoverAtCreatedPoject(driver, projectName);
+        activeProjectsPage.clickOnProofLink(driver);
+    }
+
+    public void emailProofFromGlobalSearchSteps(WebDriver driver, SoftAssert softAssert, String email, String projectName){
+        activeProjectsPage.mouseHoverAtCreatedPoject(driver, projectName);
+        activeProjectsPage.clickOnProofLink(driver);
+    }
+
+    public void proofingEmailProof(WebDriver driver, String emailForProofing) throws InterruptedException
+    {
+        utilityMethods.swichToWindow(driver, 1);
+        driver.manage().window().maximize();
+        activeProjectsPage.waitForLoadingProofingWindow(driver);
+        activeProjectsPage.clickEmailProofLnk(driver);
+        activeProjectsPage.enterEmailForProofingOnProof(driver, emailForProofing);
+        activeProjectsPage.clickOnArtworkCheckOnProof(driver);
+        activeProjectsPage.clickOnEmailProofOnProofBtn(driver);
+        activeProjectsPage.waitSucessSentEmailOnProof(driver);
+        activeProjectsPage.clickOnCloseOnProofBtn(driver);
+        createNewProjectSteps.closePopingWindow(driver);
+        utilityMethods.swichToWindow(driver,0);
+        Thread.sleep(2000);
     }
 
 }

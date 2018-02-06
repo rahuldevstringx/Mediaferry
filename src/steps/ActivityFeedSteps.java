@@ -23,13 +23,32 @@ public class ActivityFeedSteps extends BasePage{
         scrollTop(driver);
     }
 
+    public void selectProjectByApplyingAllFilters(WebDriver driver, SoftAssert softAssert, String projectName, String campaign, String productionStatus, String priority, String width, String height){
+        activityFeedPage.waitForOverlaySpinner(driver);
+        //First filter Campaign
+        activityFeedPage.enterProjectNameInSearchField(driver, projectName);
+        //Second filter project name
+        activityFeedPage.selectCampaignName(driver, campaign);
+        //Third filter production status
+        activityFeedPage.selectProductionStatus(driver, productionStatus);
+        //Fourth filter priority
+        activityFeedPage.selectPriority(driver, priority);
+        //Fifth filter width
+        //activityFeedPage.enterWidth(driver, width);
+        //Sixth filter height
+        //activityFeedPage.enterHeight(driver, height);
+        //Click on filter button
+        activityFeedPage.clickOnFilterBtn(driver);
+        activityFeedPage.verifyFilterFunctionality(driver, softAssert, projectName);
+        scrollTop(driver);
+    }
 
-    public void goToUploadAssetsWindow(WebDriver driver) throws InterruptedException {
+    public void goToUploadAssetsWindow(WebDriver driver) {
         activityFeedPage.mouseHoverOnActivityHeader(driver);
         activityFeedPage.clickOnUploadAssetsLnk(driver);
     }
 
-    public void respondQueryViaEmailSteps(WebDriver driver, String expectedSubject, String response){
+    public void respondQueryViaEmailSteps(WebDriver driver, String expectedSubject, String response) throws InterruptedException {
         String activationUrl = mailReadWhileRespond.readMails(expectedSubject);
         driver.get(activationUrl);
         activityFeedPage.waitForActivityFeedToLoad(driver);
@@ -48,7 +67,7 @@ public class ActivityFeedSteps extends BasePage{
         activityFeedPage.verifyRespondStatus(driver, softAssert);
     }
 
-    public void doQuerySteps(WebDriver driver, String projectName, String query) throws InterruptedException{
+    public void queryingSteps(WebDriver driver, String projectName, String query) throws InterruptedException{
     	scrollTop(driver);
     	activityFeedPage.mouseHoverAtSelectedPoject(driver, projectName);
         Thread.sleep(2000);
@@ -74,7 +93,7 @@ public class ActivityFeedSteps extends BasePage{
         softAssert.assertEquals(activityFeedPage.getComment(driver), comment);
     }
 
-    public void doRespondSteps(WebDriver driver, String response){
+    public void respondingSteps(WebDriver driver, String response) throws InterruptedException {
         activityFeedPage.clickOnRespondToQueryLnk(driver);
         activityFeedPage.enterResponseTextArea(driver, response);
         activityFeedPage.clickOnRespondBtn(driver);

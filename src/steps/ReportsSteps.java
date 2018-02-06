@@ -16,19 +16,10 @@ public class ReportsSteps extends BasePage {
 		reportsPage.mouseHoverOnReportsHeader(driver);
 		reportsPage.clickOnProjectStatus(driver);
 		reportsPage.selectDateRange(driver,"today");
-		//reportsPage.searchButton(driver);
-		//reportsPage.selectFilter(driver, "4");
-		//reportsPage.saveFilter(driver);
-		//reportsPage.enterText(driver, "enterText1");
-		//reportsPage.saveButton(driver);
-		//reportsPage.okButton(driver);
-		//reportsPage.clickOnJobType(driver, "1");
 	}
 
 	public void filter(WebDriver driver) {
-		//reportsPage.resetButton(driver);
 		reportsPage.selectFilter(driver, "4");
-		//reportsPage.searchButton(driver);
 	}
 	
 	public void selectJobType(WebDriver driver) throws InterruptedException {

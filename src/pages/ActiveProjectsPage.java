@@ -7,18 +7,18 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.asserts.SoftAssert;
 import BaseClasses.BasePage;
+import steps.CreateNewProjectSteps;
+import utilities.UtilityMethods;
 
 public class ActiveProjectsPage extends BasePage {
 
 	private By searchFieldLocator = By.id("f_project");
-	private By filterBtnLocator = By.xpath("//button[text()='Filter']");
-	private By filterTitleLocator = By.xpath("//div[@class='portlet-title']");
 	private By queryLinkLocator = By.xpath("//a[text()='Query']");
 	private By emailProofLinkLocator = By.xpath("//a[text()='Email Proof']");
 	private By shareLinkLocator = By.xpath("//a[text()='Share']");
-	//private By proofLnkLocator = By.xpath("//a[text()='Proof']");
-	private By closeProofBtnLocator = By.xpath("//div[@id='close']");
-	private By proofLnkLocator = By.xpath("//span[@class='portfolio-info-text']/a[text()='Proof']"); 
+	private By clickOnActiveProjectsLocator = By.id("tra");
+	private By typeInSearchFieldLocator = By.id("f_project");
+	private By proofLnkLocator = By.xpath("//span[@class='portfolio-info-text']/a[text()='Proof']");
 	private By sharingEmailsFieldLocator = By.xpath("//input[@id='email_field']");
 	private By closeWindowShareBtnLocator = By.xpath("//button[text()='Share']");
 	private By closeWindowCloseBtnLocator = By.xpath("//button[text()='Share']/preceding-sibling::button");
@@ -35,7 +35,6 @@ public class ActiveProjectsPage extends BasePage {
 	private By respondQueryLnkLocator = By.xpath("//img[@src='https://devso.mediaferry.com/mf-s49qa/sitetheme_new/image/respond-icon.gif']");
 	private By status = By.xpath("//p[contains(text(),'Query to Traffic')]");
 	private By respondBtnLocator = By.id("respond_action");
-	//private By respondBtnLocator = By.xpath("//button[text()='Respond']");
 	private By responseMsgBoxLocator = By.xpath("//textarea[@id='user_response2']");
 	private By spinner = By.xpath("//img[@src='./../assets/images/loading-spinner-grey.gif']");
 	private By approveSpinner = By.xpath("//img[@src='https://devso.mediaferry.com/mf-s49qa/sitetheme_new/img/loading-spinner-grey.gif']");
@@ -43,19 +42,22 @@ public class ActiveProjectsPage extends BasePage {
 	private By clickApproveLocator = By.xpath("//div[@data-original-title='Approve']/img");
 	private By clickConfirmYesLocator = By.xpath("//button[@class='btn btn blue']");
 	private By getPreReleaseTextLocator = By.xpath("//p[@class='authertext']");
-	private By emailProofFieldLocator = By.id("email_container_proof");
-	private By artworkCheckboxLocator = By.id("proof_attach");
+	private By emailProofFieldLocator = By.id("email_field_proof");
+	private By emailProofFieldOnProofingLocator = By.xpath("//div[@class='tags']/ul/following-sibling::input");
+	private By artworkCheckboxOnProofLocator = By.id("proof_attach");
+	private By artworkCheckboxLocator = By.xpath("//div[@id='uniform-proof_attach']//input");
 	private By emailProofButtonLocator = By.xpath("//div[@id='emailProofpopup']//button[text()='Email Proof']");
-	private By sucessfullSentMsgLocator = By.xpath("//span[contains(text(),'The proof has been emailed to the recipients.')]");
+	private By emailProofBtnOnProofLocator = By.xpath("//button[text()='Email Proof']");
+	private By closeProofBtnLocator = By.xpath("//div[@id='emailProofpopup']//button[text()='Close']");
+	private By closeProofBtnOnProofLocator = By.xpath("//button[text()='Email Proof']/../button[text()='Close']");
+	private By sucessfullSentMsgLocator = By.xpath("//div[@id='emailProofpopup']//button[text()='Email Proof']/../span");
+	private By successfullSentMsgOnProofLocator = By.xpath("//div[@id='myModal']//button[text()='Email Proof']/../span");
+	private By clickOnFilterLocator = By.xpath("//button[text()='Filter']");
+	CreateNewProjectPage createNewProjectPage = new CreateNewProjectPage();
 
 	public void enterProjectNameInSearchField(WebDriver driver, String projectName) {
 		waitForElementVisibility(driver, searchFieldLocator);
 		driver.findElement(searchFieldLocator).sendKeys(projectName);
-	}
-
-	public void clickOnFilterBtn(WebDriver driver) {
-		waitForElementClickable(driver, filterBtnLocator);
-		driver.findElement(filterBtnLocator).click();
 	}
 
 	public boolean verifyFilterFunctionality(WebDriver driver, SoftAssert softAssert, String ProjectName) {
@@ -113,6 +115,12 @@ public class ActiveProjectsPage extends BasePage {
 		}
 	}
 
+	public void clickEmailProofLnk(WebDriver driver){
+		By emailProofLnkLocator = By.id("btn2");
+		waitForElementVisibility(driver, emailProofLnkLocator);
+		driver.findElement(emailProofLnkLocator).click();
+	}
+
 	public void clickOnShareBtn(WebDriver driver){
 		waitForElementVisibility(driver, closeWindowShareBtnLocator);
 		driver.findElement(closeWindowShareBtnLocator).click();
@@ -156,22 +164,18 @@ public class ActiveProjectsPage extends BasePage {
 		driver.findElement(responseMsgBoxLocator).sendKeys(response);
 	}
 
-	public String getValidationOnTypeRespose(WebDriver driver){
+	public String getValidationOnTypeResponse(WebDriver driver){
 		waitForElementVisibility(driver, validationTypeResponseLocator);
 		String actualValidation = driver.findElement(validationTypeResponseLocator).getText();
 		return actualValidation;
 	}
 
-	public void enterResponceToQuery(WebDriver driver, String response) {
+	public void enterResponseToQuery(WebDriver driver, String response) {
 		WebElement textAreaResponse = driver.findElement(By.xpath("//textarea[@name='user_response2']"));
 		waitForElementVisibility(driver, By.xpath("//textarea[@name='user_response2']"));
 		textAreaResponse.sendKeys(Keys.TAB);
 		textAreaResponse.clear();
 		textAreaResponse.sendKeys(response);
-	}
-
-	public void waitForLoadingActiveProjectPage(WebDriver driver){
-		waitForElementVisibility(driver, filterTitleLocator);
 	}
 
 	public void verifyValidationMessage(WebDriver driver, SoftAssert softAssert) {
@@ -204,17 +208,6 @@ public class ActiveProjectsPage extends BasePage {
 		driver.findElement(queryTextBox).sendKeys(message);
 	}
 
-	public void verifyStatus(WebDriver driver, SoftAssert softAssert){
-		waitForElementVisibility(driver, status);
-		softAssert.assertTrue(driver.findElement(status).isDisplayed());
-	}
-
-	public void verifyRespondToQuery(WebDriver driver, SoftAssert softAssert,String projectName ) {
-		String xpath="//span[contains(text(),'"+projectName+"')]/..//img[@src='https://devso.mediaferry.com/mf-s49qa/sitetheme_new/image/respond-icon.gif']";
-		waitForElementVisibility(driver, By.xpath(xpath));
-		softAssert.assertTrue(driver.findElement(By.xpath(xpath)).isDisplayed());
-	}
-
 	public void verifyQueryLink(WebDriver driver, SoftAssert softAssert, boolean ifCondition, boolean elseCondition) {
 		try {
 			if (driver.findElement(queryLinkLocator).isDisplayed()) {
@@ -226,10 +219,6 @@ public class ActiveProjectsPage extends BasePage {
 			e.printStackTrace();
 		}
 
-	}
-
-	public void clickOnCloseBtnProofWindow(WebDriver driver){
-		driver.findElement(closeProofBtnLocator).click();
 	}
 
 	public void verifyStatusLink(WebDriver driver, SoftAssert softAssert, boolean ifCondition, boolean elseCondition) {
@@ -244,6 +233,11 @@ public class ActiveProjectsPage extends BasePage {
 			e.printStackTrace();
 		}
 
+	}
+
+	public void clickOnFilterBtn(WebDriver driver) {
+		waitForElementClickable(driver, clickOnFilterLocator);
+		driver.findElement(clickOnFilterLocator).click();
 	}
 
 	public void checkProject(WebDriver driver) throws InterruptedException {
@@ -268,7 +262,7 @@ public class ActiveProjectsPage extends BasePage {
 		String[] arrSplit = getCompleteText.split(compaign);
 		String arrSplitText = arrSplit[0];
 		String arrSplitSubstring = arrSplitText.substring(arrSplitText.length()-14,arrSplitText.length());
-		String actualString=arrSplitSubstring.substring(0, 11);
+		String actualString = arrSplitSubstring.substring(0, 11);
 		softAssert.assertEquals(actualString, "Pre Release");
 		}
 	
@@ -279,14 +273,23 @@ public class ActiveProjectsPage extends BasePage {
 
 	public void enterEmailForProofing(WebDriver driver, String emailForProofing){
 		waitForElementVisibility(driver, emailProofFieldLocator);
-		driver.findElement(emailProofFieldLocator).clear();
-		driver.findElement(emailProofFieldLocator).sendKeys();
-		driver.findElement(emailProofFieldLocator).click();
+		driver.findElement(emailProofFieldLocator).sendKeys(emailForProofing);
+		driver.findElement(emailProofFieldLocator).sendKeys(Keys.ENTER);
+	}
+
+	public void enterEmailForProofingOnProof(WebDriver driver, String emailForProofing){
+		By emailFieldLocator = By.xpath("//div[@class='tags']");
+		waitForElementVisibility(driver, emailProofFieldOnProofingLocator);
+		driver.findElement(emailProofFieldOnProofingLocator).sendKeys(emailForProofing);
+		//driver.findElement(emailProofFieldOnProofingLocator).sendKeys(Keys.ENTER);
 	}
 
 	public void clickOnArtworkCheckbox(WebDriver driver){
-		waitForElementVisibility(driver, artworkCheckboxLocator);
 		driver.findElement(artworkCheckboxLocator).click();
+	}
+
+	public void clickOnArtworkCheckOnProof(WebDriver driver){
+		driver.findElement(artworkCheckboxOnProofLocator).click();
 	}
 
 	public void clickOnEmailProofButton(WebDriver driver){
@@ -294,8 +297,47 @@ public class ActiveProjectsPage extends BasePage {
 		driver.findElement(emailProofButtonLocator).click();
 	}
 
-	public void waitSucessfullSentEmailProof(WebDriver driver){
+	public void clickOnEmailProofOnProofBtn(WebDriver driver){
+		waitForElementVisibility(driver, emailProofBtnOnProofLocator);
+		driver.findElement(emailProofBtnOnProofLocator).click();
+	}
+
+	public void clickOnCloseProofButton(WebDriver driver){
+		waitForElementVisibility(driver, closeProofBtnLocator);
+		driver.findElement(closeProofBtnLocator).click();
+	}
+
+	public void clickOnCloseOnProofBtn(WebDriver driver){
+		waitForElementVisibility(driver, closeProofBtnOnProofLocator);
+		driver.findElement(closeProofBtnOnProofLocator).click();
+	}
+
+	public void waitSucessSentEmailProof(WebDriver driver){
 		waitForElementVisibility(driver, sucessfullSentMsgLocator);
 		waitForElementInvisibility(driver, sucessfullSentMsgLocator);
+	}
+
+	public void waitSucessSentEmailOnProof(WebDriver driver){
+		waitForElementVisibility(driver, successfullSentMsgOnProofLocator);
+		waitForElementInvisibility(driver, successfullSentMsgOnProofLocator);
+	}
+
+	public void verifyEmailProof(WebDriver driver, String proofUrl){
+		By emailProofBtnLocator = By.xpath("//div[@title='Email Proof']");
+		By closeBtnLocator = By.xpath("//div[@id='close']");
+		driver.get(proofUrl);
+		createNewProjectPage.waitForLoadingProofingWindow(driver);
+		waitForElementVisibility(driver, emailProofBtnLocator);
+	}
+
+	public void clickOnActiveProjects(WebDriver driver)
+	{
+		driver.findElement(clickOnActiveProjectsLocator).click();
+	}
+
+	public void typeInSearchField(WebDriver driver, String projectName)
+	{
+		waitForElementVisibility(driver, typeInSearchFieldLocator);
+		driver.findElement(typeInSearchFieldLocator).sendKeys(projectName);
 	}
 }

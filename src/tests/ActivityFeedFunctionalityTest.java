@@ -22,30 +22,39 @@ public class ActivityFeedFunctionalityTest extends BasePage{
     HomeSteps homeSteps = new HomeSteps();
     ActiveProjectsSteps activeProjectsSteps = new ActiveProjectsSteps();
     ActivityFeedSteps activityFeedSteps = new ActivityFeedSteps();
+    CreateNewProjectSteps createNewProjectSteps = new CreateNewProjectSteps();
 
     String projectName = null;
+    int projectCountBefore;
+    int projectCountAfter;
 
     @BeforeTest
     public void start() throws IOException {
         driver = driverObj.createDriver();
         driver.get(driverObj.getUrl());
-        loginSteps.login(driver, softAssert, driverObj.getUsername(), driverObj.getPassword());
-        projectName = "My Test Project  412_2017-10-12";
     }
 
     @Test(priority = 1)
+    public void loginWithValidCredentials() throws Exception {
+        loginSteps.login(driver, softAssert, driverObj.getUsername(), driverObj.getPassword());
+        projectName = utilityMethods.createUniqueProjectName(driverObj.getProjectName());
+        projectCountBefore = homeSteps.projectCountBefore(driver);
+        homeSteps.creatingNewProject(driver);
+        createNewProjectSteps.fillingDetails(driver, projectName, driverObj.getCampaign(), driverObj.getBrandName(), driverObj.getCreativeLevel(), driverObj.getFilePath(), driverObj.getPriority(), driverObj.getProjectOwner(), driverObj.getInstructions(), driverObj.getTeam(), driverObj.getWidth(), driverObj.getHeight());
+        createNewProjectSteps.submittingJob(driver,softAssert,projectName);
+        projectCountAfter = homeSteps.projectCountAfter(driver);
+        homeSteps.verifyProjectCount(driver, softAssert, projectCountBefore+1, projectCountAfter);
+    }
+
+    @Test(priority = 2)
     public void activityFeedFunctionality() throws InterruptedException {
+        homeSteps.navigateToActivityFeed(driver);
         homeSteps.waitingForHeaderLnksSpinner(driver);
-        homeSteps.goToActivityFeed(driver);
-        homeSteps.waitingForHeaderLnksSpinner(driver);
-        activityFeedSteps.selectProject(driver, softAssert, projectName);
-        //scrollTop(driver);
-        activityFeedSteps.doQuerySteps(driver, projectName, "Test Query");
+        activityFeedSteps.selectProjectByApplyingAllFilters(driver, softAssert, projectName, driverObj.getCampaign(), "Ready for Production", driverObj.getPriority(), driverObj.getWidth(), driverObj.getHeight());
+        activityFeedSteps.queryingSteps(driver, projectName, "Test Query");
         activityFeedSteps.verifyStatusActivityFeed(driver, softAssert, "Query to Traffic");
-        activityFeedSteps.verifyProfileNameWhichQuerying(driver, softAssert, driverObj.getProfileName());
-        activityFeedSteps.doRespondSteps(driver, "Test Response");
+        activityFeedSteps.respondingSteps(driver, "Test Response");
         activityFeedSteps.verifyStatusActivityFeed(driver, softAssert, "Responded");
-        activityFeedSteps.verifyProfileNameWhichResponding(driver, softAssert, driverObj.getProfileName());
         activityFeedSteps.commentOnProjectSteps(driver, "Test Comment");
         activityFeedSteps.verifyActivityComment(driver, softAssert, "Ajmal Khan", "Test Comment");
     }

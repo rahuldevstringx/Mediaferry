@@ -17,8 +17,6 @@ public class UploadDownloadAssetsSteps {
 
     public void uploadFileWhileEdit(WebDriver driver, String filePath, SoftAssert softassert) throws InterruptedException {
         activityFeedPage.uploadFilesOnSameWindow(driver,softassert, filePath);
-        //createNewProjectPage.acceptingWarnings(driver);
-        //activityFeedPage.waitForUploadSameWindow(driver);
         activityFeedPage.verifyUploadedFile(driver, softassert);
         createNewProjectPage.clickOnSaveBtn(driver);
     }
@@ -29,8 +27,6 @@ public class UploadDownloadAssetsSteps {
 
     public void uploadFileOnProofingWindow(WebDriver driver, String filePath,String sampleFilePath, SoftAssert softAssert) throws InterruptedException {
         activityFeedPage.uploadFilesWhileEditing(driver,softAssert, filePath);
-        //createNewProjectSteps.replace(driver);
-        //createNewProjectSteps.acceptingUpload(driver);
         createNewProjectSteps.acceptingUpload(driver);
         createNewProjectPage.clickOnSaveBtn(driver);
         waitForSaveSuccessfullyMsg(driver);
@@ -67,12 +63,9 @@ public class UploadDownloadAssetsSteps {
     
     public void uploadFileOnProof(WebDriver driver, String filePath,SoftAssert softAssert) throws InterruptedException {
         activityFeedPage.uploadFilesWhileEditing(driver,softAssert, filePath);
-        //createNewProjectSteps.acceptingUpload(driver);
         createNewProjectSteps.acceptingUpload(driver);
         createNewProjectPage.clickOnSaveBtn(driver);
         createNewProjectPage.waitForProofButton(driver);
-        
-        //waitForSaveSuccessfullyMsg(driver);        
     }
 
     public void uploadFileByFeedActivity(WebDriver driver, String filePath, String projectName,SoftAssert softAssert) throws InterruptedException {

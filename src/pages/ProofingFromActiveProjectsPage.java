@@ -15,7 +15,6 @@ public class ProofingFromActiveProjectsPage extends BasePage {
 	}
 
 	public void typeInSearchField(WebDriver driver, String projectName)
-
 	{
 		waitForElementVisibility(driver, typeInSearchFieldLocator);
 		driver.findElement(typeInSearchFieldLocator).sendKeys(projectName);

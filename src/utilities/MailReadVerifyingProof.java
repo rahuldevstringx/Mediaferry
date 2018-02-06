@@ -25,13 +25,12 @@ public class MailReadVerifyingProof {
     private String userName = "qa.gaurav239@gmail.com";// provide user name
     private String password = "result1029";// provide password
     String activationUrl;
-    boolean status;
 
     public MailReadVerifyingProof() {
 
     }
 
-    public boolean readMails(String expectedSubject) {
+    public String readMails(String expectedSubject) {
         properties = new Properties();
         properties.setProperty("mail.host", "imap.gmail.com");
         properties.setProperty("mail.port", "995");
@@ -56,7 +55,6 @@ public class MailReadVerifyingProof {
                 Message message = messages[i];
                 String subject = message.getSubject();
                 if (subject.equals(expectedSubject)) {
-                    status = true;
                     Address[] from = message.getFrom();
                     System.out.println("-------------------------------");
                     System.out.println("Date : " + message.getSentDate());
@@ -73,8 +71,7 @@ public class MailReadVerifyingProof {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
-        //return activationUrl;
-        return status;
+        return activationUrl;
     }
     public void processMessageBody(Message message)
     {
@@ -84,9 +81,9 @@ public class MailReadVerifyingProof {
             if(content instanceof String) {
                 //System.out.println(content);
                 String mailContent = (String) content;
-                activationUrl = mailContent.substring(
-                        mailContent.indexOf("earliest.<br>")+13,
-                        mailContent.indexOf("<br><br>Best regards"));
+                    /*activationUrl = mailContent.substring(
+                            mailContent.indexOf("earliest.<br>")+13,
+                            mailContent.indexOf("<br><br>Best regards"));*/
                 //System.out.println(activationUrl);
 
             }
@@ -117,6 +114,9 @@ public class MailReadVerifyingProof {
                 o = bodyPart.getContent();
                 if (o instanceof String)
                 {
+                    String subString = (String) o;
+                    activationUrl = subString.substring(subString.indexOf("<a href=")+9,
+                            subString.indexOf(">Click Here</a>")-1);
                     System.out.println(o);
                 } else if (o instanceof Multipart) {
                     procesMultiPart((Multipart) o);
@@ -128,8 +128,8 @@ public class MailReadVerifyingProof {
             e.printStackTrace(); }
     }
     public static void main(String[] args) {
-        String expectedSubject = "[MediaFerry] My Test Project 2206 Proof is ready for you to review";
-        MailReadWhileRespond sample = new MailReadWhileRespond();
+        String expectedSubject = "[MediaFerry] My Test Project 22061 Proof is ready for you to review";
+        MailReadVerifyingProof sample = new MailReadVerifyingProof();
         String activationUrl = sample.readMails(expectedSubject);
         System.out.println(activationUrl);
     }

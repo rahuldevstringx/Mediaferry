@@ -61,10 +61,9 @@ public class ProofingFromActiveProjectsTest extends BasePage {
 		globalSearchPage.searchByProjectAndClick(driver, softAssert, projectName);
 		uploadDownloadAssetsSteps.uploadFileOnProof(driver, driverObj.getFilePath(), softAssert);
 		proofingFromActiveSteps.proofingFromActiveProjects(driver, softAssert, projectName,driverObj.getSampleFilePath());
-		
-		
 
-}
+	}
+
 	@AfterTest
     public void tearDown(){
         driver.quit();

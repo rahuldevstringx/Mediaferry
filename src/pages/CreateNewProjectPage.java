@@ -13,19 +13,15 @@ import org.testng.asserts.SoftAssert;
 public class CreateNewProjectPage extends BasePage{
 
     private By projectNameLocator = By.id("JobNumberId");
-    // Campaign Field Locator
     private By selectCampaignLocator = By.xpath("//div[@id='s2id_select_campaign']/a");
     private By campaignInputLocator = By.xpath("//div[@id='select2-drop']/div[@class='select2-search']/input");
     private By campaignResultLocator = By.xpath("//div[@id='select2-drop']/ul/li[1]/div/span[contains(text(),'SFA')]");
-    // Brand Name Field Locator
     private By selectbrandNameLocator = By.xpath("//div[@id='s2id_account_Advertiser']/a");
     private By brandNameInputLocator = By.xpath("//div[@id='select2-drop']/div/input");
     private By brandNameResultLocator = By.xpath("//div[@id='select2-drop']/ul/li[2]/div");
-    // Project Owner Field Locator
     private By projectOwnerLocator = By.xpath("//div[@id='s2id_account_SalesRep']/a");
     private By projectOwnerInputLocator=By.xpath("//div[@id='select2-drop']/div/input");
     private By projectOwnerResultLocator=By.xpath("//div[@id='select2-drop']/ul/li[1]/div");
-
     private By instructionsLocator=By.id("copyinstructions");
     private By teamInputLocator = By.id("metadata_2");
     private By jobTypeSelectLocator = By.id("account_JobTypeId");
@@ -47,7 +43,6 @@ public class CreateNewProjectPage extends BasePage{
     private By fpStyleLocator= By.xpath("//input[@id='metadata_3']");
     private By targetLocator= By.xpath("//input[@id='metadata_8']");
     private By saveBtnLocator= By.id("save_view_edit");
-    private By proofPagestLocator = By.xpath("//select[@id='metadata_13']");
     private By classificationLocator = By.xpath("//select[@id='account_WebSubTypeId']");
     private By jobSubTypeLocator = By.xpath("//select[@id='account_SizeDefinitionId']");
     private By orderValueLocator = By.xpath("//input[@id='metadata_6']");
@@ -61,7 +56,10 @@ public class CreateNewProjectPage extends BasePage{
     private By warningAcceptanceLocator = By.xpath("//h4[text()='Warning']/.. /following-sibling::div[2]/button[1]");
     private By waitForDeleteButtonLocator = By.xpath("//span[text()='Delete']");
     private By waitForProofButtonLocator = By.xpath("//span[text()='Proof']");
-    
+    private By saveChangesSucessMsgLocator = By.xpath("//div[@id='successSms']/div");
+    private By uploadSuccessMsgLocator = By.xpath("//div[@id='invalidErrorSMG']//button/..");
+    private By uploadAssetSpinnerLocator = By.xpath("img[@src='https://devso.mediaferry.com/mf-s49qa/sitetheme_new/img/loading-spinner-grey.gif']");
+
     public void enterProjectName(WebDriver driver, String projectName) {
         waitForElementVisibility(driver, projectNameLocator);
         driver.findElement(projectNameLocator).sendKeys(projectName);
@@ -163,7 +161,7 @@ public class CreateNewProjectPage extends BasePage{
     }
 
     public void productionStatusEdit(WebDriver driver) throws InterruptedException {
-        Thread.sleep(3000);
+        Thread.sleep(4000);
         scrollDownToPage(driver);
         Select dropdown = new Select(driver.findElement(By.id("mf_ProductionStatus")));
         dropdown.selectByVisibleText("Ready for Proof");
@@ -190,9 +188,9 @@ public class CreateNewProjectPage extends BasePage{
     }
 
     public void clickOnFinishedArtworkByScroll(WebDriver driver) throws InterruptedException {
-        Thread.sleep(4000);
-        scrollDownToPage(driver);
-        waitForElementClickable(driver, finishedArtworkLocator);
+        Thread.sleep(2000);
+        scrollDownToXYIndex(driver);
+        waitForElementVisibility(driver, finishedArtworkLocator);
         driver.findElement(finishedArtworkLocator).click();
     }
 
@@ -250,7 +248,6 @@ public class CreateNewProjectPage extends BasePage{
     }
 
     public void verifyJobUploadedSuccessfully(WebDriver driver, SoftAssert softAssert, String projectName){
-        //By xpath = By.xpath("//span[contains(text(),'"+projectName+"')]");
         By xpath = By.xpath("//div[@id='successfulUpload']");
         waitForElementPresence(driver, xpath);
         softAssert.assertTrue(driver.findElement(xpath).isDisplayed());
@@ -275,7 +272,6 @@ public class CreateNewProjectPage extends BasePage{
         Thread.sleep(2000);
         waitForElementVisibility(driver, warningAcceptanceLocator);
         driver.findElement(warningAcceptanceLocator).click();
-        // scrollToElement(driver, saveChangesBtnLocator);
         waitForElementVisibility(driver, waitForDeleteButtonLocator);
     }
 
@@ -325,6 +321,30 @@ public class CreateNewProjectPage extends BasePage{
 
     public void clickOnSaveBtn(WebDriver driver) {
         javaScriptClick(driver,saveBtnLocator);
+    }
+
+    public void clickOnSaveChangesBtn(WebDriver driver){
+        waitForElementVisibility(driver, saveBtnLocator);
+        driver.findElement(saveBtnLocator).click();
+    }
+
+    public String getSaveChangesSuccessMsg(WebDriver driver){
+        String successfullMsg;
+        waitForElementVisibility(driver, saveChangesSucessMsgLocator);
+        successfullMsg = driver.findElement(saveChangesSucessMsgLocator).getText();
+        return successfullMsg;
+    }
+
+    public String getUploadSuccessMsg(WebDriver driver){
+        String uploadSuccessMsg;
+        waitForElementVisibility(driver, uploadSuccessMsgLocator);
+        uploadSuccessMsg = driver.findElement(uploadSuccessMsgLocator).getText();
+        return uploadSuccessMsg;
+    }
+
+    public void waitForUploadAsset(WebDriver driver){
+        waitForElementVisibility(driver, uploadAssetSpinnerLocator);
+        waitForElementInvisibility(driver, uploadAssetSpinnerLocator);
     }
 
     public void waitForProofButton(WebDriver driver)

@@ -52,7 +52,13 @@ public class Driver {
 		FileOperations fileOperations = new FileOperations();
 		Constants constants = new Constants();
 		return fileOperations.getValueFromPropertyFile(constants.CONFIG_WEB_FILE_PATH, "campaign");
-	} 
+	}
+
+	public String getProductionStatus(){
+		FileOperations fileOperations = new FileOperations();
+		Constants constants = new Constants();
+		return fileOperations.getValueFromPropertyFile(constants.CONFIG_WEB_FILE_PATH, "productionStatus");
+	}
 
 	public String getBrandName() {
 		FileOperations fileOperations = new FileOperations();

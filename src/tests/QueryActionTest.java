@@ -47,7 +47,7 @@ public class QueryActionTest {
     @Test(priority = 2)
     public void verifyValidationMessage() {
         activeProjectsSteps.selectProjectForQuerying(driver, softAssert, projectName);
-        activeProjectsSteps.verifyValiationMessageOnQueryFields(driver, softAssert);
+        activeProjectsSteps.verifyValidationMessageOnQueryFields(driver, softAssert);
     }
 
     @Test(priority = 3)

@@ -2,6 +2,7 @@ package tests;
 
 import BaseClasses.Driver;
 import org.openqa.selenium.WebDriver;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -9,12 +10,11 @@ import steps.ActiveProjectsSteps;
 import steps.CreateNewProjectSteps;
 import steps.HomeSteps;
 import steps.LoginSteps;
-import utilities.MailReadVerifyingProof;
 import utilities.UtilityMethods;
 
 import java.io.IOException;
 
-public class EmailProofActiveProjectsTest {
+public class EmailProofFromGridTest {
     Driver driverObj = new Driver();
     WebDriver driver = null;
     SoftAssert softAssert = new SoftAssert();
@@ -48,16 +48,23 @@ public class EmailProofActiveProjectsTest {
 
     @Test(priority = 2)
     public void emailProofing() throws InterruptedException {
+        String saveSuccessMessage = " Your changes have been saved successfully.";
+        String uploadSuccessMessage = "The selected files has been uploaded successfully.";
         activeProjectsSteps.selectProjectForEdit(driver, softAssert, projectName);
-        createNewProjectSteps.emailProofPrerequisitesSteps(driver, driverObj.getFilePath());
-        activeProjectsSteps.selectProject(driver, softAssert, projectName);
+        createNewProjectSteps.editJobForProofing(driver, softAssert, driverObj.getSampleFilePath(), saveSuccessMessage, uploadSuccessMessage);
         activeProjectsSteps.emailProofFromGrid(driver, driverObj.getSignUpEmail(), projectName);
 
     }
 
     @Test(priority = 3)
     public void verifyEmailProof(){
-        String expectedSubject = "[MediaFerry]" + projectName + "Proof is ready for you to review";
-        activeProjectsSteps.verifyEmailProofSteps(driver, softAssert, projectName, expectedSubject);
+        String expectedSubject = "[MediaFerry] " + projectName + " Proof is ready for you to review";
+        activeProjectsSteps.verifyEmailProofSteps(driver, expectedSubject);
+    }
+
+    @AfterTest
+    public void tearDown(){
+        driver.quit();
+        driver=null;
     }
 }

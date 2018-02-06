@@ -13,7 +13,7 @@ import org.testng.Assert;
 public class BasePage {
 
 	public void waitForElementVisibility(WebDriver driver, By elem) {
-		WebDriverWait webDriverWait = new WebDriverWait(driver, 120);
+		WebDriverWait webDriverWait = new WebDriverWait(driver, 80);
 		webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(elem));
 	}
 
@@ -47,7 +47,7 @@ public class BasePage {
 	}
 
 	public void waitForElementInvisibility(WebDriver driver, By elem) {
-		WebDriverWait webDriverWait = new WebDriverWait(driver, 120);
+		WebDriverWait webDriverWait = new WebDriverWait(driver, 80);
 		webDriverWait.until(ExpectedConditions.invisibilityOfElementLocated(elem));
 	}
 
@@ -103,6 +103,14 @@ public class BasePage {
 				Assert.fail("Failed to click "+n+" times \n" + errorMessage);
 			}
 		}
+	}
+
+	public void scrollDownToXYIndex(WebDriver driver){
+		((JavascriptExecutor)driver).executeScript("window.scrollBy(0, 2100)");
+	}
+
+	public void scrollDownToViewElement(WebDriver driver, By element){
+		((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", element);
 	}
 
 	public void scrollDownToPage (WebDriver driver){

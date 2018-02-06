@@ -3,7 +3,7 @@
 
 <suite name="Mediaferry_RegressionSuite">
 
-	<test name='LoginTest'>
+	<test name="LoginTest">
 		<classes>
 			<class name="tests.LoginTest" />
 		</classes>
@@ -12,7 +12,7 @@
 		<classes>
 			<class name="tests.SignUpTest" />
 		</classes>
-	</test>  -->
+	</test>-->
 	<test name="CreateProjectTest">
 		<classes>
 			<class name="tests.CreateNewProjectTest" />
@@ -63,16 +63,6 @@
 			<class name="tests.ChangePasswordTest" />
 		</classes>
 	</test>
-	<!--<test name="UploadProfilePic">
-		<classes>
-			<class name="tests.UploadProfilePicTest" />
-		</classes>
-	</test>  -->	
-	<test name="ActivityFeedFunctionalityTest">
-		<classes>
-			<class name="tests.ActivityFeedFunctionalityTest" />
-		</classes>
-	</test>
 	<test name="SharingProjectTest">
 		<classes>
 			<class name="tests.ShareProjectTest" />
@@ -101,6 +91,31 @@
 	<test name="ProofingFromActiveProjectsTest">
 		<classes>
 			<class name="tests.ProofingFromActiveProjectsTest" />
+		</classes>
+	</test>
+	<test name="EmailProofFromGrid">
+		<classes>
+			<class name="tests.EmailProofFromGridTest"></class>
+		</classes>
+	</test>
+	<test name="EmailProofFromProofing">
+		<classes>
+			<class name="tests.EmailProofProofingTest"></class>
+		</classes>
+	</test>
+	<test name="EmailProofFromGlobalSearch">
+		<classes>
+			<class name="tests.EmailProofGlobalSearchTest"></class>
+		</classes>
+	</test>
+	<test name="ActivityFeedFunctionalityTest">
+		<classes>
+			<class name="tests.ActivityFeedFunctionalityTest" />
+		</classes>
+	</test>
+	<test name="UploadProfilePic">
+		<classes>
+			<class name="tests.UploadProfilePicTest" />
 		</classes>
 	</test>
 

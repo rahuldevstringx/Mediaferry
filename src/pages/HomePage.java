@@ -21,6 +21,8 @@ public class HomePage extends BasePage {
     private By activityFeedLnkLocator = By.linkText("Activity Feed");
     private By proofToReviewLnkLocator = By.xpath("//div[contains(@class, 'dashboard-stat') and contains(., ' Proofs to review')]");
     private By spinnerOnConstantLnk = By.xpath("//img[@src='https://devso.mediaferry.com/mf-s49qa/sitetheme_new/img/loading-spinner-grey.gif']");
+
+    //img[@src='https://devso.mediaferry.com/mf-s49qa/sitetheme_new/img/loading-spinner-grey.gif']
     private By profileFieldLocator = By.id("profile");
     private By myProfileLnkLocator = By.xpath("//a[@class='UpdateProfile']");
     private By saveChangesBtnLocator = By.xpath("//button[contains(text(),'Save Changes')]");
@@ -69,6 +71,13 @@ public class HomePage extends BasePage {
     }
 
     public void clickActiveProjectsLnk(WebDriver driver){
+        waitForElementVisibility(driver, activeProjectFieldLocator);
+        driver.findElement(activeProjectFieldLocator).click();
+    }
+
+    public void clickActiveProjectsLnkByScrollTop(WebDriver driver){
+        scrollTop(driver);
+        waitForElementVisibility(driver, activeProjectFieldLocator);
         driver.findElement(activeProjectFieldLocator).click();
     }
 

@@ -35,7 +35,7 @@ public class HomeSteps {
         homePage.clickOnActiveProjectsLnkWithoutWait(driver);
     }
 
-    public void goToActivityFeed(WebDriver driver){
+    public void navigateToActivityFeed(WebDriver driver){
         homePage.clickOnActivityFeedLnk(driver);
     }
 

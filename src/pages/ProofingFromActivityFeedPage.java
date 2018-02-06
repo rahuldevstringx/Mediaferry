@@ -9,7 +9,6 @@ import utilities.UtilityMethods;
 
 public class ProofingFromActivityFeedPage extends BasePage {
 	
-	CreateNewProjectPage createNewProjectPage = new CreateNewProjectPage();
 	UtilityMethods utilityMethods = new UtilityMethods();
 	CreateNewProjectSteps createNewProjectSteps = new CreateNewProjectSteps();
 	ActivityFeedPage activityFeedPage = new ActivityFeedPage();
@@ -28,6 +27,7 @@ public class ProofingFromActivityFeedPage extends BasePage {
 		waitForElementVisibility(driver, searchProjectLocator);
 		driver.findElement(searchProjectLocator).sendKeys(projectName);
 	}
+
 	public void clickOnFilterBtn(WebDriver driver) {
 		waitForElementClickable(driver, clickOnFilterLocator);
 		driver.findElement(clickOnFilterLocator).click();
