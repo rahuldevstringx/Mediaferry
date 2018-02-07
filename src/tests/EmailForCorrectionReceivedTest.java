@@ -6,26 +6,27 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
-import steps.*;
+import steps.ActiveProjectsSteps;
+import steps.CreateNewProjectSteps;
+import steps.HomeSteps;
+import steps.LoginSteps;
 import utilities.UtilityMethods;
 
 import java.io.IOException;
 
-public class RespondViaMailTest {
-
+public class EmailForCorrectionReceivedTest {
     Driver driverObj = new Driver();
     WebDriver driver = null;
-    LoginSteps loginSteps = new LoginSteps();
     SoftAssert softAssert = new SoftAssert();
-    UtilityMethods utilityMethods = new UtilityMethods();
+    LoginSteps loginSteps = new LoginSteps();
     HomeSteps homeSteps = new HomeSteps();
+    UtilityMethods utilityMethods = new UtilityMethods();
     CreateNewProjectSteps createNewProjectSteps = new CreateNewProjectSteps();
     ActiveProjectsSteps activeProjectsSteps = new ActiveProjectsSteps();
-    ActivityFeedSteps activityFeedSteps  = new ActivityFeedSteps();
 
     String projectName = null;
-    int projectCountBefore, projectCountAfter;
-    String expectedSubject;
+    int projectCountBefore;
+    int projectCountAfter;
 
     @BeforeTest
     public void start() throws IOException {
@@ -46,41 +47,17 @@ public class RespondViaMailTest {
     }
 
     @Test(priority = 2)
-    public void sendQuery() throws InterruptedException {
-        activeProjectsSteps.selectProject(driver, softAssert, projectName);
-        activeProjectsSteps.sendQuerySteps(driver, softAssert, projectName, "This is query message text");
-    }
-
-   //@Test(priority = 3)
-    public void respondingViaMailWhileLogin() throws InterruptedException {
-        expectedSubject = "[MediaFerry] EKCS has a query " + projectName;
-        activityFeedSteps.respondQueryViaEmailSteps(driver, expectedSubject, "Response to the Test Query");
-        activityFeedSteps.verifyStatus(driver, softAssert);
-    }
-
-    //@Test(priority = 4)
-    public void verifyQueryLink() throws InterruptedException {
-        homeSteps.goToActiveProjectsWithoutWait(driver);
-        homeSteps.waitingForConstantLnksSpinner(driver);
-        activeProjectsSteps.verifyingQueryLnkSteps(driver, softAssert, projectName, true, false);
-    }
-
-    //@Test(priority = 5)
-    public void verifyStatusLink() {
-        activeProjectsSteps.verifyingStatusLnkSteps(driver, softAssert, projectName, true, false);
-   
-    }
-    
-    //@Test(priority = 6)
-    public void respondingViaMailNotLogin() throws InterruptedException{
-        loginSteps.logout(driver, softAssert);
-        activityFeedSteps.respondQueryViaEmailWhenNotLogin(driver, expectedSubject);
-        loginSteps.verifyValidation(driver, softAssert);
+    public void sendEmailForCorrectonReceived() throws InterruptedException {
+        String saveSuccessMessage = " Your changes have been saved successfully.";
+        String uploadSuccessMessage = "The selected files has been uploaded successfully.";
+        activeProjectsSteps.selectProjectForEdit(driver, softAssert, projectName);
+        createNewProjectSteps.editJobForProofing(driver, softAssert, driverObj.getSampleFilePath(), saveSuccessMessage, uploadSuccessMessage);
+        createNewProjectSteps.sendEmailForReadyForProofSteps(driver);
     }
 
     @AfterTest
-    public void tearDown() {
+    public void tearDown(){
         driver.quit();
-        driver = null;
+        driver=null;
     }
 }

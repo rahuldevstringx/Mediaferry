@@ -146,6 +146,10 @@ public class CreateNewProjectSteps {
         homePage.clickActiveProjectsLnkByScrollTop(driver);
     }
 
+    public void sendEmailForReadyForProofSteps(WebDriver driver){
+
+    }
+
     public void verifyChangesSuccessfull(WebDriver driver, SoftAssert softAssert, String message){
         softAssert.assertEquals(createNewProjectPage.getSaveChangesSuccessMsg(driver), message);
     }

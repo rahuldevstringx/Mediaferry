@@ -1,10 +1,7 @@
 package pages;
 
 import BaseClasses.BasePage;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
@@ -360,8 +357,13 @@ public class CreateNewProjectPage extends BasePage{
 
     public void waitForSpinnerInvisibility(WebDriver driver) throws InterruptedException{
     	Thread.sleep(1000);
-        waitForElementVisibility(driver, spinnerLocator);
-        waitForElementInvisibility(driver, spinnerLocator);
+    	try{
+            waitForElementVisibility(driver, spinnerLocator);
+            waitForElementInvisibility(driver, spinnerLocator);
+        }
+        catch (TimeoutException e){
+            e.getStackTrace();
+        }
     }
 
 }
